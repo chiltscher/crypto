@@ -2,18 +2,18 @@ import {ALPHA_START, ALPHABET, GetAlphabetArray, IsUpperCase, ShiftLeft} from ".
 
 export default class Caesar {
 
-    private readonly ShiftedABC : number[];
+    private readonly ShiftedABC: number[];
 
     constructor(shift: number = 1) {
-       this.ShiftedABC = ShiftLeft(GetAlphabetArray(), shift);
+        this.ShiftedABC = ShiftLeft(GetAlphabetArray(), shift);
     }
 
-    public encipher(plain: string) : string {
+    public encipher(plain: string): string {
         // This is where we will save the encryption
-        let encrypted : string = "";
+        let encrypted: string = "";
 
         // Iterate through the whole string
-        for(let i = 0; i < plain.length; i++) {
+        for (let i = 0; i < plain.length; i++) {
             /* first we have to find out the ascii code for the letter
              * checking just the lowercase letters makes it more simple.
              * We can convert it to uppercase later.
@@ -25,21 +25,24 @@ export default class Caesar {
 
             // This step will give us the exact position of the letter in the alphabet...
             let index = asciiLetter - ALPHA_START;
+            // just encipher letters
+            if (index >= 0) {
+                // ... but we'll take the letter from the shifted one and translate it back to a string.
+                let newLetter = String.fromCharCode(this.ShiftedABC[index]);
 
-            // ... but we'll take the letter from the shifted one and translate it back to a string.
-            let newLetter = String.fromCharCode(this.ShiftedABC[index]);
+                // transform it to uppercase if it was before
+                encrypted += isUpperCase ? newLetter.toUpperCase() : newLetter;
+            } else encrypted += plain[i];
 
-            // transform it to uppercase if it was before
-            encrypted += isUpperCase ? newLetter.toUpperCase() : newLetter;
         }
         return encrypted;
     }
 
-    public decipher(crypted: string) :string {
-        let decrypted : string = "";
+    public decipher(crypted: string): string {
+        let decrypted: string = "";
 
         // Iterate through the whole string
-        for(let i = 0; i < crypted.length; i++) {
+        for (let i = 0; i < crypted.length; i++) {
             // check if the letter is uppercase to restore it later
             let isUpperCase = IsUpperCase(crypted[i]);
 
@@ -48,7 +51,7 @@ export default class Caesar {
             // ... its position in the shifted alphabet ...
             let index = this.ShiftedABC.indexOf(asciiLetter);
             // ... and take the code form the found position of the unshifted alphabet
-            let newLetter = String.fromCharCode(ALPHABET[index]);
+            let newLetter = (index >= 0) ? String.fromCharCode(ALPHABET[index]) : crypted[i];
 
             // add the decoded letter
             decrypted += isUpperCase ? newLetter.toUpperCase() : newLetter;
