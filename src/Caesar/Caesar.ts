@@ -1,8 +1,7 @@
-import {ALPHA_START, GetAlphabetArray, IsUpperCase, ShiftLeft} from "../Basics/Basics";
+import {ALPHA_START, ALPHABET, GetAlphabetArray, IsUpperCase, ShiftLeft} from "../Basics/Basics";
 
 export default class Caesar {
 
-    private readonly ABC : number[] = GetAlphabetArray();
     private readonly ShiftedABC : number[];
 
     constructor(shift: number = 1) {
@@ -41,12 +40,17 @@ export default class Caesar {
 
         // Iterate through the whole string
         for(let i = 0; i < crypted.length; i++) {
+            // check if the letter is uppercase to restore it later
             let isUpperCase = IsUpperCase(crypted[i]);
 
+            // find the ascii code for the letter, ...
             let asciiLetter = (crypted[i].toLowerCase()).charCodeAt(0);
+            // ... its position in the shifted alphabet ...
             let index = this.ShiftedABC.indexOf(asciiLetter);
+            // ... and take the code form the found position of the unshifted alphabet
+            let newLetter = String.fromCharCode(ALPHABET[index]);
 
-            let newLetter = String.fromCharCode(this.ABC[index]);
+            // add the decoded letter
             decrypted += isUpperCase ? newLetter.toUpperCase() : newLetter;
         }
 

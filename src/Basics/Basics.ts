@@ -1,6 +1,8 @@
 export const ALPHA_START = 97; // ASCII code for the lower "a";
 export const ALPHA_END = 122; // ASCII coder for the lower "z";
 
+export const ALPHABET = GetAlphabetArray();
+
 export function GetAlphabetArray() : number[] {
     let result : number[] = [];
     for(let i = ALPHA_START; i <= ALPHA_END; i++) {
